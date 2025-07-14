@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-// create transporter
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
@@ -9,18 +8,23 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD,
   },
 });
-export async function sendVerificationMail(user_email, task_name, deadline) {
+export async function sendTaskMail(username, user_email, task_name, deadline) {
   try {
     await transporter.sendMail({
-      from: `"Taskyz" <${process.env.EMAIL}>`,
+      from: `Taskyz <${process.env.EMAIL}>`,
       to: user_email,
       subject: "New Task Assigned",
       html: `
       <div style="font-family: Arial, sans-serif; background: #f7f7f7; padding: 32px;">
-        
+        <h2 style="color: #333;">New Task Assigned</h2>
+        <p style="color: #555;">Hello ${username},</p>
+        <p style="color: #555;">You have been assigned a new task:</p>
+        <h3 style="color: #333;">${task_name}</h3>
+        <p style="color: #555;">Deadline: ${deadline}</p>
+
         <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;">
         <div style="text-align: center; color: #bbb; font-size: 12px;">
-          &copy; ${new Date().getFullYear()} Taskyz. All rights reserved.
+         ${new Date().getFullYear()} Taskyz. All rights reserved.
         </div>
       </div>
       `,

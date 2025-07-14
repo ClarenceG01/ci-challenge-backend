@@ -29,3 +29,40 @@ export async function getTasks(req, res) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 }
+export async function getUserTasks(req, res) {
+  const { username } = req.params;
+  try {
+	const tasks = await task.find({ username });
+	console.log(`Tasks for user ${username}:`, tasks);
+	if (tasks.length === 0) {
+	  return res.status(404).json({ message: "No tasks found for this user" });
+	}
+	res.status(200).json({
+	  tasks,
+	});
+  } catch (error) {
+	console.log(error);
+	res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+export async function updateStatus(req, res) {
+  const { id } = req.params;
+  const { status } = req.body;
+  try {
+	const updatedTask = await task.findByIdAndUpdate(
+	  id,
+	  { status },
+	  { new: true }
+	);
+	if (!updatedTask) {
+	  return res.status(404).json({ message: "Task not found" });
+	}
+	res.status(200).json({
+	  message: "Task status updated successfully",
+	  task: updatedTask,
+	});
+  } catch (error) {
+	console.log(error);
+	res.status(500).json({ message: "Server error", error: error.message });
+  }
+}

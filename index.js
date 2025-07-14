@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import { userRoute } from "./src/routes/user.js";
+import { taskRoute } from "./src/routes/task.js";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.use("/users", userRoute);
+app.use("/tasks", taskRoute);
 async function connectToDatabase() {
   try {
     await mongoose.connect(`${process.env.MONGO_CONNECTION_STRING}`);

@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 // middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://ci-challenge.vercel.app",
     credentials: true,
   })
 );
